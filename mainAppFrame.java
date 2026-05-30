@@ -522,12 +522,24 @@ public class mainAppFrame extends JFrame {
 
     private void launchLearningModule(int moduleId) {
         /* =========================================================================
-         * [MEMBER 2 ACTION HOOK]
-         * Connect these click triggers directly to Member 2's Educational Screen frames.
+         * [BEGINNING OF CHAN KA HOU 103617's ACTION HOOK]
+         * Connect these click triggers directly to Chan Ka Hou's Educational Screen frames.
          * ========================================================================= */
-        System.out.println("Integration Check: Navigating to Learning Module Topic #" + moduleId);
-        JOptionPane.showMessageDialog(this, "Opening Learning Module " + moduleId + "\n(Linked to Member 2 Content Dashboard Views).");
-    }
+       try {
+           Learning learningModule = new LearningModule(moduleId);
+           learningModule.showContent(this);
+       } catch (LearningContentException e) {
+           JOptionPane.showMessageDialog(
+                   this,
+                   e.getMessage(),
+                   "Learning Module Error",
+                   JOptionPane.ERROR_MESSAGE
+           );
+       }
+   }
+        /* =========================================================================
+         * [END OF CHAN KA HOU 103617's ACTION HOOK]
+         * ========================================================================= */
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(mainAppFrame::new);
