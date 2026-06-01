@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-// QuizModule is a GUI class for the quiz.
+// QuizModule is a GUI class for the quiz
 // It extends JFrame because this quiz will open as a GUI window.
 // It implements Quiz interface, so it must provide the methods from Quiz.
 public class QuizModule extends JFrame implements Quiz {
