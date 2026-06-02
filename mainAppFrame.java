@@ -354,7 +354,8 @@ public class mainAppFrame extends JFrame {
              * [MEMBER 3 ACTION HOOK]
              * Connect this listener action directly to display Member 3's Quiz UI panel.
              * ========================================================================= */
-            JOptionPane.showMessageDialog(this, "Launching Quiz... \n(Linked to Member 3 Quiz Execution System)");
+            Quiz quizModule = new QuizModule();
+            quizModule.startQuiz();
         });
         
         quizBox.add(btnStartQuiz);
