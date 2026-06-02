@@ -1,16 +1,16 @@
-//creator:Rosfanida 106171
+// Creator: Rosfanida 106171
 
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-// QuizModule is a GUI class for the quiz
+// QuizModule is a GUI class for the quiz.
 // It extends JFrame because this quiz will open as a GUI window.
 // It implements Quiz interface, so it must provide the methods from Quiz.
 public class QuizModule extends JFrame implements Quiz {
 
-        // Main method to run the quiz program
+    // Main method to run the quiz directly for testing.
     public static void main(String[] args) {
         Quiz quizModule = new QuizModule();
         quizModule.startQuiz();
@@ -25,38 +25,67 @@ public class QuizModule extends JFrame implements Quiz {
     // score stores the user's total correct answers.
     private int score = 0;
 
+    // These variables are used to save the user's score into the storage system.
+    private String username;
+    private Storage storageManager;
+
     // GUI components used in the quiz window.
-    private JLabel lblQuestionNumber; // Displays the question number
-    private JLabel lblQuestionType;   // Displays the type of question
+    private JLabel lblQuestionNumber; // Displays the current question number
+    private JLabel lblQuestionType;   // Displays the question type
     private JTextArea txtQuestion;    // Displays the question text
-    private JTextField txtAnswer;     // Allows the user to type an answer
-    private JLabel lblFeedback;       // Displays Correct or Wrong message
+    private JTextField txtAnswer;     // Text field for user to enter answer
+    private JLabel lblFeedback;       // Displays correct or wrong message
+    private JLabel lblScore;          // Displays score in the header
     private JButton btnSubmit;        // Button to submit answer
-    private JButton btnNext;          // Button to move to the next question
+    private JButton btnNext;          // Button to move to next question
     private JButton btnCancel;        // Button to cancel the quiz
 
     // Colour theme used for the quiz GUI.
-    private final Color COLOR_BG = new Color(30, 45, 47);            // Main background colour
-    private final Color COLOR_LIGHT_HEADER = new Color(23, 34, 36);  // Header background colour
-    private final Color COLOR_SDG_GREEN = new Color(76, 175, 80);    // Green SDG colour
-    private final Color COLOR_CARD_BG = new Color(38, 54, 56);       // Quiz card background
-    private final Color COLOR_TEXT_FIELD = new Color(38, 56, 58);    // Answer text field background
-    private final Color COLOR_BORDER = new Color(70, 85, 87);        // Card border colour
+    private final Color COLOR_BG = new Color(30, 45, 47);           // Main background colour
+    private final Color COLOR_LIGHT_HEADER = new Color(23, 34, 36); // Header background colour
+    private final Color COLOR_SDG_GREEN = new Color(76, 175, 80);   // SDG green colour
+    private final Color COLOR_CARD_BG = new Color(38, 54, 56);      // Quiz card background colour
+    private final Color COLOR_TEXT_FIELD = new Color(38, 56, 58);   // Answer text field background
+    private final Color COLOR_BORDER = new Color(70, 85, 87);       // Card border colour
 
-    // Constructor for QuizModule.
-    // This runs when the QuizModule object is created.
+    // Default constructor.
+    // This constructor is used when the quiz is run directly without login data.
     public QuizModule() {
-        setTitle("SDG 3: Good Health & Well-being Quiz"); // Set window title
-        setSize(420, 800); // Set window size to look like smartphone layout
-        setLocationRelativeTo(null); // Display the window at the center of the screen
-        setResizable(false); // Prevent user from resizing the window
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close only this quiz window
+        this("", null);
+    }
 
-        questions = new ArrayList<>(); // Create an empty list for questions
-        loadSDGQuestions(); // Load all SDG 3 questions into the list
+    // Constructor used when QuizModule is opened from mainAppFrame.
+    // It receives username and storageManager so the final score can be saved.
+    public QuizModule(String username, Storage storageManager) {
+        this.username = username;
+        this.storageManager = storageManager;
 
-        createQuizGUI(); // Create the quiz GUI layout
-        displayQuestion(); // Display the first question
+        // Set the title of the quiz window.
+        setTitle("SDG 3: Good Health & Well-being Quiz");
+
+        // Set the size of the quiz window.
+        setSize(420, 800);
+
+        // Display the quiz window in the center of the screen.
+        setLocationRelativeTo(null);
+
+        // Prevent the user from resizing the window.
+        setResizable(false);
+
+        // Close only the quiz window when user exits the quiz.
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        // Create an empty ArrayList to store questions.
+        questions = new ArrayList<>();
+
+        // Load 20 SDG 3 questions into the quiz.
+        loadSDGQuestions();
+
+        // Create the GUI design for the quiz.
+        createQuizGUI();
+
+        // Display the first question.
+        displayQuestion();
     }
 
     // This method comes from the Quiz interface.
@@ -73,19 +102,18 @@ public class QuizModule extends JFrame implements Quiz {
         questions.add(question);
     }
 
-    // This method checks whether the user's answer is correct or wrong.
+    // This method is used to check whether the user's answer is correct or wrong.
     @Override
     public boolean evaluateAnswer(Question question, String userAnswer) {
 
-        // Remove extra spaces before and after the user's answer.
+        // Remove extra spaces from the user's answer.
         String answer = userAnswer.trim();
 
-        // Remove extra spaces before and after the correct answer.
+        // Remove extra spaces from the correct answer.
         String correctAnswer = question.getAnswer().trim();
 
-        // TRUE_FALSE is case-sensitive.
-        // Example: If the correct answer is "True", user must type exactly "True".
-        // "true" or "TRUE" will be counted as wrong.
+        // TRUE_FALSE question is case-sensitive.
+        // User must type exactly "True" or "False".
         if (question.getQuestionType() == QuestionType.TRUE_FALSE) {
             return answer.equals(correctAnswer);
         }
@@ -95,36 +123,36 @@ public class QuizModule extends JFrame implements Quiz {
         return answer.equalsIgnoreCase(correctAnswer);
     }
 
-    // This method creates the full GUI layout for the quiz window.
+    // This method is used to create the full quiz GUI layout.
     private void createQuizGUI() {
 
-        // Main container panel using BorderLayout.
+        // Main container panel that holds the header and content area.
         JPanel containerPanel = new JPanel(new BorderLayout());
         containerPanel.setBackground(COLOR_BG);
 
-        // Header panel at the top of the window.
+        // Header panel at the top of the quiz window.
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(COLOR_LIGHT_HEADER);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(18, 20, 18, 20));
 
-        // Title label shown in the header.
+        // Title label in the header.
         JLabel lblTitle = new JLabel("Knowledge Check");
         lblTitle.setFont(new Font("Arial", Font.BOLD, 24));
         lblTitle.setForeground(Color.WHITE);
 
-        // Score label shown on the right side of the header.
-        JLabel lblScore = new JLabel(score + " pts");
+        // Score label in the header.
+        lblScore = new JLabel(score + " pts");
         lblScore.setFont(new Font("Arial", Font.BOLD, 14));
         lblScore.setForeground(COLOR_SDG_GREEN);
 
-        // Add title and score into the header.
+        // Add title and score to the header panel.
         headerPanel.add(lblTitle, BorderLayout.WEST);
         headerPanel.add(lblScore, BorderLayout.EAST);
 
-        // Add header to the top part of the main container.
+        // Add header panel to the main container.
         containerPanel.add(headerPanel, BorderLayout.NORTH);
 
-        // Content panel stores the quiz card and instructions.
+        // Content panel stores the quiz card and instruction text.
         JPanel contentPanel = new JPanel();
         contentPanel.setBackground(COLOR_BG);
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
@@ -139,21 +167,20 @@ public class QuizModule extends JFrame implements Quiz {
         contentPanel.add(lblSection);
         contentPanel.add(Box.createVerticalStrut(15));
 
-        // quizCard is the main card that contains the question and answer area.
-        // It uses custom painting to create rounded corners.
+        // Quiz card panel to display the question, answer field, and buttons.
         JPanel quizCard = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
 
-                // Make the card smoother.
+                // Make the card edges smoother.
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                // Fill the rounded rectangle with card background colour.
+                // Draw the quiz card background with rounded corners.
                 g2.setColor(COLOR_CARD_BG);
                 g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
 
-                // Draw the border of the card.
+                // Draw the quiz card border.
                 g2.setColor(COLOR_BORDER);
                 g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
 
@@ -161,14 +188,14 @@ public class QuizModule extends JFrame implements Quiz {
             }
         };
 
-        // Set quiz card properties.
+        // Set the quiz card layout and size.
         quizCard.setOpaque(false);
         quizCard.setLayout(new BoxLayout(quizCard, BoxLayout.Y_AXIS));
         quizCard.setBorder(new EmptyBorder(25, 20, 25, 20));
         quizCard.setMaximumSize(new Dimension(370, 560));
         quizCard.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        // Label to display current question number.
+        // Label to display question number.
         lblQuestionNumber = new JLabel();
         lblQuestionNumber.setFont(new Font("Arial", Font.BOLD, 20));
         lblQuestionNumber.setForeground(Color.WHITE);
@@ -180,18 +207,18 @@ public class QuizModule extends JFrame implements Quiz {
         lblQuestionType.setForeground(COLOR_SDG_GREEN);
         lblQuestionType.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        // Text area to display question text.
+        // Text area to display the question.
         txtQuestion = new JTextArea();
-        txtQuestion.setEditable(false); // User cannot edit the question text
-        txtQuestion.setLineWrap(true); // Wrap long lines
-        txtQuestion.setWrapStyleWord(true); // Wrap by word, not letter
-        txtQuestion.setOpaque(false); // Transparent background
+        txtQuestion.setEditable(false);
+        txtQuestion.setLineWrap(true);
+        txtQuestion.setWrapStyleWord(true);
+        txtQuestion.setOpaque(false);
         txtQuestion.setForeground(Color.WHITE);
         txtQuestion.setFont(new Font("Arial", Font.BOLD, 16));
         txtQuestion.setBorder(null);
         txtQuestion.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        // Scroll pane is used in case the question text is long.
+        // Scroll pane is used in case the question is too long.
         JScrollPane questionScroll = new JScrollPane(txtQuestion);
         questionScroll.setBorder(null);
         questionScroll.setOpaque(false);
@@ -199,75 +226,65 @@ public class QuizModule extends JFrame implements Quiz {
         questionScroll.setMaximumSize(new Dimension(330, 230));
         questionScroll.setPreferredSize(new Dimension(330, 230));
 
-        // Label for answer input field.
+        // Label for the answer section.
         JLabel lblAnswer = new JLabel("Your Answer");
         lblAnswer.setFont(new Font("Arial", Font.BOLD, 14));
         lblAnswer.setForeground(new Color(140, 155, 157));
         lblAnswer.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        // Text field where the user types the answer.
+        // Text field where user types the answer.
         txtAnswer = new JTextField();
         txtAnswer.setMaximumSize(new Dimension(330, 45));
         txtAnswer.setPreferredSize(new Dimension(330, 45));
-
-        // Set answer text box background colour.
         txtAnswer.setBackground(COLOR_TEXT_FIELD);
-
-        // Set the font colour inside the text box to white.
         txtAnswer.setForeground(Color.WHITE);
-
-        // Set cursor colour to white.
         txtAnswer.setCaretColor(Color.WHITE);
-
-        // Set font style and size for typed answer.
         txtAnswer.setFont(new Font("Arial", Font.PLAIN, 16));
 
-        // Add a light border and inner padding to the answer text box.
-        // The line border creates the visible light outline.
-        // The empty border creates spacing inside the text box.
+        // Add light border and padding to the answer text field.
         txtAnswer.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(180, 180, 180), 2),
                 BorderFactory.createEmptyBorder(10, 12, 10, 12)
         ));
 
-        // Make sure the background colour of the text box is visible.
+        // Make sure the text field background is visible.
         txtAnswer.setOpaque(true);
 
-        // Feedback label to show whether the answer is correct or wrong.
+        // Label to show feedback after user submits answer.
         lblFeedback = new JLabel(" ");
         lblFeedback.setFont(new Font("Arial", Font.BOLD, 14));
         lblFeedback.setForeground(Color.WHITE);
         lblFeedback.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Create Submit and Next buttons.
+        // Create buttons for submit, next, and cancel.
         btnSubmit = createGreenButton("Submit Answer");
         btnNext = createGreenButton("Next Question");
         btnCancel = createCancelButton("X Cancel Quiz");
 
-        // Next button is disabled at first.
-        // It will be enabled after the user submits an answer.
+        // Disable next button until user submits an answer.
         btnNext.setEnabled(false);
 
-        // When Submit button is clicked, checkAnswer() will run.
+        // When Submit button is clicked, checkAnswer() method will run.
         btnSubmit.addActionListener(e -> checkAnswer());
 
-        // When Next button is clicked, nextQuestion() will run.
+        // When Next button is clicked, nextQuestion() method will run.
         btnNext.addActionListener(e -> nextQuestion());
 
+        // When Cancel button is clicked, user will be asked to confirm cancellation.
         btnCancel.addActionListener(e -> {
-    int choice = JOptionPane.showConfirmDialog(
-            this,
-            "Are you sure you want to cancel the quiz?",
-            "Cancel Quiz",
-            JOptionPane.YES_NO_OPTION
-    );
+            int choice = JOptionPane.showConfirmDialog(
+                    this,
+                    "Are you sure you want to cancel the quiz?",
+                    "Cancel Quiz",
+                    JOptionPane.YES_NO_OPTION
+            );
 
-    if (choice == JOptionPane.YES_OPTION) {
-        dispose();
-    }
-});
+            if (choice == JOptionPane.YES_OPTION) {
+                dispose();
+            }
+        });
 
-        // Add all components into quiz card.
+        // Add all components into the quiz card.
         quizCard.add(lblQuestionNumber);
         quizCard.add(Box.createVerticalStrut(8));
         quizCard.add(lblQuestionType);
@@ -301,24 +318,24 @@ public class QuizModule extends JFrame implements Quiz {
         lblInstruction.setAlignmentX(Component.LEFT_ALIGNMENT);
         contentPanel.add(lblInstruction);
 
-        // Add content panel to the center of the main container.
+        // Add content panel into the main container.
         containerPanel.add(contentPanel, BorderLayout.CENTER);
 
-        // Add the main container into the JFrame.
+        // Add main container into the frame.
         add(containerPanel);
     }
 
-    // This method creates a green button with the same design style.
+    // This method creates a green rounded button.
     private JButton createGreenButton(String text) {
         JButton button = new JButton(text) {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
 
+                // Make rounded button smoother.
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                // If the button is enabled, use green colour.
-                // If disabled, use grey colour.
+                // Use green colour if button is enabled, grey if disabled.
                 if (isEnabled()) {
                     g2.setColor(COLOR_SDG_GREEN);
                 } else {
@@ -329,54 +346,40 @@ public class QuizModule extends JFrame implements Quiz {
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 
                 g2.dispose();
+
+                // Let the button draw its text.
                 super.paintComponent(g);
             }
         };
 
-
-
-        // Remove default button design so custom painting is visible.
+        // Remove default button style to show custom design.
         button.setContentAreaFilled(false);
         button.setBorderPainted(false);
         button.setFocusPainted(false);
         button.setOpaque(false);
 
-        // Set button text design.
+        // Set button text style.
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Arial", Font.BOLD, 16));
-
-        // Set button size.
         button.setMaximumSize(new Dimension(330, 45));
         button.setPreferredSize(new Dimension(330, 45));
-
-        // Change cursor to hand when hovering over the button.
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         return button;
     }
 
-    // This method creates a cancel button to exit the quiz.
+    // This method creates the cancel button.
     private JButton createCancelButton(String text) {
         JButton button = new JButton(text);
 
-        // Set button background colour to red.
+        // Set cancel button colour to red.
         button.setBackground(new Color(180, 50, 50));
-
-        // Set button text colour to white.
         button.setForeground(Color.WHITE);
-
-        // Set button font.
         button.setFont(new Font("Arial", Font.BOLD, 16));
-
-        // Remove focus border.
         button.setFocusPainted(false);
-
-        // Set button size.
         button.setMaximumSize(new Dimension(330, 45));
         button.setPreferredSize(new Dimension(330, 45));
-
-        // Change cursor to hand when hovering over the button.
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -387,19 +390,19 @@ public class QuizModule extends JFrame implements Quiz {
     private void displayQuestion() {
         Question currentQuestion = questions.get(currentQuestionIndex);
 
-        // Display question number and total questions.
+        // Display question number and total number of questions.
         lblQuestionNumber.setText("Question " + (currentQuestionIndex + 1) + " of " + questions.size());
 
-        // Display the question type.
+        // Display question type.
         lblQuestionType.setText("Question Type: " + currentQuestion.getQuestionType());
 
-        // Display the question text.
+        // Display question text.
         txtQuestion.setText(currentQuestion.getQuestionText());
 
-        // Clear previous answer.
+        // Clear the answer field.
         txtAnswer.setText("");
 
-        // Clear previous feedback message.
+        // Clear previous feedback.
         lblFeedback.setText(" ");
 
         // Enable submit button and disable next button.
@@ -411,29 +414,32 @@ public class QuizModule extends JFrame implements Quiz {
     private void checkAnswer() {
         Question currentQuestion = questions.get(currentQuestionIndex);
 
-        // Get the user's answer from the text field.
+        // Get answer from the text field.
         String userAnswer = txtAnswer.getText().trim();
 
-        // If the answer field is empty, ask the user to enter an answer.
+        // If answer is empty, show warning message.
         if (userAnswer.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your answer.");
             return;
         }
 
-        // Check if the answer is correct.
+        // Check whether the answer is correct or wrong.
         if (evaluateAnswer(currentQuestion, userAnswer)) {
             lblFeedback.setText("Correct!");
             lblFeedback.setForeground(COLOR_SDG_GREEN);
             score++;
+
+            // Update score label in the header.
+            lblScore.setText(score + " pts");
         } else {
             lblFeedback.setText("Wrong. Correct answer: " + currentQuestion.getAnswer());
             lblFeedback.setForeground(Color.RED);
         }
 
-        // After submitting, prevent user from submitting again.
+        // Disable Submit button so user cannot submit twice.
         btnSubmit.setEnabled(false);
 
-        // Enable next button to move to the next question.
+        // Enable Next button after answer is submitted.
         btnNext.setEnabled(true);
     }
 
@@ -441,20 +447,20 @@ public class QuizModule extends JFrame implements Quiz {
     private void nextQuestion() {
         currentQuestionIndex++;
 
-        // If there are still questions left, display the next question.
+        // If there are still questions, display the next question.
         if (currentQuestionIndex < questions.size()) {
             displayQuestion();
         } else {
-            // If all questions are completed, show final result.
+            // If all questions are finished, show final result.
             showFinalResult();
         }
     }
 
-    // This method shows the final quiz result and motivation message.
+    // This method shows final score and motivation message.
     private void showFinalResult() {
         String message;
 
-        // Motivation message based on user's score.
+        // Choose motivation message based on score.
         if (score >= 80) {
             message = "Outstanding!";
         } else if (score >= 60) {
@@ -467,7 +473,7 @@ public class QuizModule extends JFrame implements Quiz {
             message = "Don't give up!";
         }
 
-        // Display final score and motivation message.
+        // Show final result in a message box.
         JOptionPane.showMessageDialog(
                 this,
                 "Quiz Completed!\n"
@@ -477,13 +483,41 @@ public class QuizModule extends JFrame implements Quiz {
                 JOptionPane.INFORMATION_MESSAGE
         );
 
-        // Close the quiz window after completion.
+        // Save final score into storage.
+        saveFinalScore();
+
+        // Close quiz window.
         dispose();
+    }
+
+    // This method saves the final quiz score into the storage system.
+    private void saveFinalScore() {
+        if (storageManager != null && username != null && !username.trim().isEmpty()) {
+            try {
+                storageManager.saveScore(username, score);
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Your score has been saved successfully.",
+                        "Score Saved",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+
+            } catch (CustomStorageException e) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Score could not be saved: " + e.getMessage(),
+                        "Storage Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
     }
 
     // This method loads 20 SDG 3 questions into the quiz.
     private void loadSDGQuestions() {
 
+        // Question 1: Multiple choice
         addQuestion(new Question(
                 "Which topic focuses on protecting mothers, babies, and young children before, during, and after birth?\n"
                         + "A. Mental Health\n"
@@ -494,6 +528,7 @@ public class QuizModule extends JFrame implements Quiz {
                 QuestionType.MULTIPLE_CHOICE
         ));
 
+        // Question 2: Multiple choice
         addQuestion(new Question(
                 "Which action is important for maternal and child health?\n"
                         + "A. Skipping antenatal check-ups\n"
@@ -504,6 +539,7 @@ public class QuizModule extends JFrame implements Quiz {
                 QuestionType.MULTIPLE_CHOICE
         ));
 
+        // Question 3: Multiple choice
         addQuestion(new Question(
                 "Which of the following is an example of a communicable disease?\n"
                         + "A. Diabetes\n"
@@ -514,6 +550,7 @@ public class QuizModule extends JFrame implements Quiz {
                 QuestionType.MULTIPLE_CHOICE
         ));
 
+        // Question 4: Multiple choice
         addQuestion(new Question(
                 "How can we reduce mosquito breeding?\n"
                         + "A. Remove stagnant water\n"
@@ -524,6 +561,7 @@ public class QuizModule extends JFrame implements Quiz {
                 QuestionType.MULTIPLE_CHOICE
         ));
 
+        // Question 5: Multiple choice
         addQuestion(new Question(
                 "Which disease is a non-communicable disease?\n"
                         + "A. COVID-19\n"
@@ -534,6 +572,7 @@ public class QuizModule extends JFrame implements Quiz {
                 QuestionType.MULTIPLE_CHOICE
         ));
 
+        // Question 6: Multiple choice
         addQuestion(new Question(
                 "Which habit helps reduce the risk of non-communicable diseases?\n"
                         + "A. Smoking\n"
@@ -544,6 +583,7 @@ public class QuizModule extends JFrame implements Quiz {
                 QuestionType.MULTIPLE_CHOICE
         ));
 
+        // Question 7: Multiple choice
         addQuestion(new Question(
                 "Which safety habit can help prevent injury?\n"
                         + "A. Not wearing a helmet\n"
@@ -554,6 +594,7 @@ public class QuizModule extends JFrame implements Quiz {
                 QuestionType.MULTIPLE_CHOICE
         ));
 
+        // Question 8: Multiple choice
         addQuestion(new Question(
                 "Universal Health Care means people should receive needed health services without:\n"
                         + "A. Learning about health\n"
@@ -564,6 +605,7 @@ public class QuizModule extends JFrame implements Quiz {
                 QuestionType.MULTIPLE_CHOICE
         ));
 
+        // Question 9: Multiple choice
         addQuestion(new Question(
                 "Which daily healthy lifestyle habit is recommended?\n"
                         + "A. Limit sugary drinks\n"
@@ -574,6 +616,7 @@ public class QuizModule extends JFrame implements Quiz {
                 QuestionType.MULTIPLE_CHOICE
         ));
 
+        // Question 10: Multiple choice
         addQuestion(new Question(
                 "What should people do during a health emergency?\n"
                         + "A. Spread rumours\n"
@@ -584,60 +627,70 @@ public class QuizModule extends JFrame implements Quiz {
                 QuestionType.MULTIPLE_CHOICE
         ));
 
+        // Question 11: True or False
         addQuestion(new Question(
                 "True or False: Maternal and child health includes safe delivery with trained health workers.",
                 "True",
                 QuestionType.TRUE_FALSE
         ));
 
+        // Question 12: True or False
         addQuestion(new Question(
                 "True or False: Communicable diseases can spread through air, water, insects, blood, or direct contact.",
                 "True",
                 QuestionType.TRUE_FALSE
         ));
 
+        // Question 13: True or False
         addQuestion(new Question(
                 "True or False: Non-communicable diseases spread directly from one person to another.",
                 "False",
                 QuestionType.TRUE_FALSE
         ));
 
+        // Question 14: True or False
         addQuestion(new Question(
                 "True or False: Substance abuse can harm physical health, mental health, relationships, and community safety.",
                 "True",
                 QuestionType.TRUE_FALSE
         ));
 
+        // Question 15: True or False
         addQuestion(new Question(
                 "True or False: Mental health affects how people think, feel, study, work, and connect with others.",
                 "True",
                 QuestionType.TRUE_FALSE
         ));
 
+        // Question 16: Fill in the blank
         addQuestion(new Question(
                 "Fill in the blank: Reproductive health includes puberty education, menstrual health, family planning information, and respect for consent, privacy, and personal __________.",
                 "safety",
                 QuestionType.FILL_IN_THE_BLANK
         ));
 
+        // Question 17: Fill in the blank
         addQuestion(new Question(
                 "Fill in the blank: Universal Health Care includes health promotion, prevention, treatment, rehabilitation, and access to essential __________.",
                 "medicines",
                 QuestionType.FILL_IN_THE_BLANK
         ));
 
+        // Question 18: Fill in the blank
         addQuestion(new Question(
                 "Fill in the blank: During a health emergency, people should not spread __________.",
                 "rumours",
                 QuestionType.FILL_IN_THE_BLANK
         ));
 
+        // Question 19: Short answer
         addQuestion(new Question(
                 "Give one supportive habit for maintaining mental health and well-being.",
                 "talk to trusted people",
                 QuestionType.SHORT_ANSWER
         ));
 
+        // Question 20: Short answer
         addQuestion(new Question(
                 "State one way students can support SDG 3 in daily life.",
                 "share accurate health information",
