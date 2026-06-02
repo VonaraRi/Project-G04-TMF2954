@@ -25,6 +25,9 @@ public class QuizModule extends JFrame implements Quiz {
     // score stores the user's total correct answers.
     private int score = 0;
 
+    // This variable stores the time when the quiz starts.
+    private long startTime;
+
     // These variables are used to save the user's score into the storage system.
     private String username;
     private Storage storageManager;
@@ -80,6 +83,9 @@ public class QuizModule extends JFrame implements Quiz {
 
         // Load 20 SDG 3 questions into the quiz.
         loadSDGQuestions();
+
+        // Record the quiz start time.
+        startTime = System.currentTimeMillis();
 
         // Create the GUI design for the quiz.
         createQuizGUI();
@@ -456,7 +462,7 @@ public class QuizModule extends JFrame implements Quiz {
         }
     }
 
-    // This method shows final score and motivation message.
+    // This method shows final score, time taken, and motivation message.
     private void showFinalResult() {
         String message;
 
@@ -473,11 +479,22 @@ public class QuizModule extends JFrame implements Quiz {
             message = "Don't give up!";
         }
 
+        // Calculate quiz duration.
+        long endTime = System.currentTimeMillis();
+        long durationMillis = endTime - startTime;
+
+        long seconds = durationMillis / 1000;
+        long minutes = seconds / 60;
+        seconds = seconds % 60;
+
+        String durationText = minutes + " min " + seconds + " sec";
+
         // Show final result in a message box.
         JOptionPane.showMessageDialog(
                 this,
                 "Quiz Completed!\n"
                         + "Your final score is: " + score + " / " + questions.size()
+                        + "\nTime taken: " + durationText
                         + "\n" + message,
                 "Quiz Result",
                 JOptionPane.INFORMATION_MESSAGE
