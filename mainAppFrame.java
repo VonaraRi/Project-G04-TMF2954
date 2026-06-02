@@ -414,14 +414,15 @@ public class mainAppFrame extends JFrame {
 
         /* =========================================================================
          * [MEMBER 4 TASK MATRIX: LEADERBOARD SORTING, MEDALS, AND GAMIFICATION DISPLAY]
-         * Member 4 is responsible for sorting data rows and appending badges/rewards.
+         * Sabrina Natasha is responsible for sorting data rows and appending badges/rewards.
          * This safe hook placeholder calls your Storage implementation and renders them safely.
          * ========================================================================= */
         try {
             List<String> recordsList = storageManager.getAllScores();
-            
-            // Member 4 will implement descending sort logic here (e.g., Collections.sort)
-            
+
+            Leaderboard leaderboard = new Leaderboard();
+            leaderboard.sortScores(recordsList);
+
             int displayCount = 1;
             for (String entryLine : recordsList) {
                 if (displayCount > 4) break; 
@@ -429,18 +430,30 @@ public class mainAppFrame extends JFrame {
                 String[] segments = entryLine.split(",");
                 String nameStr = segments[0];
                 String scoreStr = segments.length > 1 ? segments[1] : "0";
+                String medal = leaderboard.getMedal(displayCount);
 
                 JPanel rowPanel = new JPanel(new BorderLayout());
                 rowPanel.setOpaque(false);
                 rowPanel.setBorder(BorderFactory.createEmptyBorder(12, 20, 12, 20));
 
-                JLabel lblLeft = new JLabel("<html><body style='font-family:Arial; font-size:14px; color:#ffffff;'>"
-                        + "<span style='color:#8c9b9d; font-weight:bold;'>" + displayCount + "</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-                        + "<b>" + nameStr + "</b></body></html>");
+                JLabel lblLeft = new JLabel(
+                        "<html><body style='font-family:Arial; font-size:14px; color:#ffffff;'>"
+                        + "<span style='color:#8c9b9d; font-weight:bold;'>"
+                        + displayCount + " " + medal
+                        + "</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                        + "<b>" + nameStr + "</b>"
+                        + "</body></html>"
+                );
+
                 rowPanel.add(lblLeft, BorderLayout.WEST);
 
-                JLabel lblRight = new JLabel("<html><body style='font-family:Arial; font-size:14px; font-weight:bold; color:#4CAF50;'>"
-                        + scoreStr + " <span style='font-size:11px; color:#ffffff;'>pts</span></body></html>");
+                JLabel lblRight = new JLabel(
+                        "<html><body style='font-family:Arial; font-size:14px; font-weight:bold; color:#4CAF50;'>"
+                        + scoreStr
+                        + " <span style='font-size:11px; color:#ffffff;'>pts</span>"
+                        + "</body></html>"
+                );
+
                 rowPanel.add(lblRight, BorderLayout.EAST);
 
                 leaderboardCardContainer.add(rowPanel);
