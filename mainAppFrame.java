@@ -354,7 +354,7 @@ public class mainAppFrame extends JFrame {
              * [MEMBER 3 ACTION HOOK]
              * Connect this listener action directly to display Member 3's Quiz UI panel.
              * ========================================================================= */
-            Quiz quizModule = new QuizModule();
+            Quiz quizModule = new QuizModule(currentUser, storageManager, this);
             quizModule.startQuiz();
         });
         
