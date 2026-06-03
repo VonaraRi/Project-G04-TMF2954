@@ -1,4 +1,7 @@
-//creator:Rosfanida 106171
+/**
+ * Creator: Rosfanida ak Benjamin 106171
+ * Tester:
+ */
 //enum is used to define the types of question in the quiz.
 //each question can only havw one type from this list.
 
