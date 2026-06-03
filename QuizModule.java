@@ -470,13 +470,13 @@ public class QuizModule extends JFrame implements Quiz {
         String message;
 
         // Choose motivation message based on score.
-        if (score >= 80) {
+        if (score >= 16) {
             message = "Outstanding!";
-        } else if (score >= 60) {
+        } else if (score >= 15) {
             message = "That's good!";
-        } else if (score >= 40) {
+        } else if (score >= 10) {
             message = "Good try!";
-        } else if (score >= 20) {
+        } else if (score >= 5) {
             message = "You can do better!";
         } else {
             message = "Don't give up!";
