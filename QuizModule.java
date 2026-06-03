@@ -496,7 +496,7 @@ private void showFinalResult() {
         Reward reward = gamification.generateReward(score);
 
         // Get visual star display from Member 4's module.
-        // Example: ★★★★
+    
         String starDisplay = gamification.getStarDisplay(score);
 
         // =========================================================================
