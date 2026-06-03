@@ -1,4 +1,7 @@
-//creator:Rosfanida 106171
+/**
+ * Creator: Rosfanida ak Benjamin 106171
+ * Tester:
+ */
 
 // Quiz interface acts as a contract or rule.
 // Any class that implements this interface must provide the body for all methods below.
