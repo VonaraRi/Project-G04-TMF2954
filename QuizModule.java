@@ -465,50 +465,77 @@ public class QuizModule extends JFrame implements Quiz {
         }
     }
 
-    // This method shows final score, time taken, and motivation message.
-    private void showFinalResult() {
-        String message;
+    // =========================================================================
+// [MEMBER 4 : GAMIFICATION RESULT]
+// This part links QuizModule with Member 4's GamificationModule.
+// QuizModule sends the final score to GamificationModule.
+// GamificationModule returns badge, stars, and motivational message.
+// =========================================================================
+private void showFinalResult() {
 
-        // Choose motivation message based on score.
-        if (score >= 18) {
-            message = "Outstanding!";
-        } else if (score >= 15) {
-            message = "That's good!";
-        } else if (score >= 10) {
-            message = "Good try!";
-        } else if (score >= 5) {
-            message = "You can do better!";
-        } else {
-            message = "Don't give up!";
-        }
+    // Calculate quiz duration.
+    long endTime = System.currentTimeMillis();
+    long durationMillis = endTime - startTime;
 
-        // Calculate quiz duration.
-        long endTime = System.currentTimeMillis();
-        long durationMillis = endTime - startTime;
+    long seconds = durationMillis / 1000;
+    long minutes = seconds / 60;
+    seconds = seconds % 60;
 
-        long seconds = durationMillis / 1000;
-        long minutes = seconds / 60;
-        seconds = seconds % 60;
+    String durationText = minutes + " min " + seconds + " sec";
 
-        String durationText = minutes + " min " + seconds + " sec";
+    try {
+        // =========================================================================
+        // [MEMBER 4 CODE]
+        // Create object from Member 4's GamificationModule.
+        // This object is used to generate reward based on score.
+        // =========================================================================
+        GamificationModule gamification = new GamificationModule();
 
-        // Show final result in a message box.
+        // Generate reward based on final score.
+        // This includes badge, stars, and motivational message.
+        Reward reward = gamification.generateReward(score);
+
+        // Get visual star display from Member 4's module.
+        // Example: ★★★★
+        String starDisplay = gamification.getStarDisplay(score);
+
+        // =========================================================================
+        // [MEMBER 4 DISPLAY RESULT]
+        // Display badge, stars, and motivational message returned by Member 4.
+        // =========================================================================
         JOptionPane.showMessageDialog(
                 this,
                 "Quiz Completed!\n"
                         + "Your final score is: " + score + " / " + questions.size()
                         + "\nTime taken: " + durationText
-                        + "\n" + message,
+                        + "\n\nReward Result"
+                        + "\nBadge: " + reward.getBadge()
+                        + "\nStars: " + starDisplay
+                        + "\nMessage: " + reward.getMotivationalMessage(),
                 "Quiz Result",
                 JOptionPane.INFORMATION_MESSAGE
         );
 
-        // Save final score into storage.
-        saveFinalScore();
+    } catch (GamificationException e) {
 
-        // Close quiz window.
-        dispose();
+        // This part runs if there is an error in GamificationModule.
+        JOptionPane.showMessageDialog(
+                this,
+                "Quiz Completed!\n"
+                        + "Your final score is: " + score + " / " + questions.size()
+                        + "\nTime taken: " + durationText
+                        + "\nGamification error: " + e.getMessage(),
+                "Quiz Result",
+                JOptionPane.WARNING_MESSAGE
+        );
     }
+
+    // Save final score into storage.
+    saveFinalScore();
+
+    // Close quiz window.
+    dispose();
+}
 
     // This method saves the final quiz score into the storage system.
     private void saveFinalScore() {
