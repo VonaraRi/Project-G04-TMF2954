@@ -1,4 +1,7 @@
-// Creator: Rosfanida 106171
+/**
+ * Creator: Rosfanida ak Benjamin 106171
+ * Tester:
+ */
 
 import java.awt.*;
 import java.util.ArrayList;
