@@ -2,7 +2,7 @@
  * Gamification Interface
  * Defines all gamification behaviours
  * Creator: Sabrina Natasha (106199)
- * Tester:
+ * Tester:Rosfanida ak Benjamin 106171
  */
 
 public interface Gamification {
