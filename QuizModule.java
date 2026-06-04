@@ -1,8 +1,11 @@
 /**
+ * Class Name: QuizModule
+ * Description: This class manages the quiz GUI, question display, answer checking,
+ * score calculation, final result display, reward generation, and score saving
+ * for the SDG 3 Quiz Application.
  * Creator: Rosfanida ak Benjamin 106171
  * Tester:
  */
-
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
