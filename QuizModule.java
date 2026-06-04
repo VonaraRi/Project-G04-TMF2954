@@ -522,7 +522,7 @@ public class QuizModule extends JFrame implements Quiz {
                 "B",
                 QuestionType.MULTIPLE_CHOICE
         ));
-
+         // Question 2: Multiple choice
         addQuestion(new Question(
                 "Which action is important for maternal and child health?\n"
                         + "A. Skipping antenatal check-ups\n"
@@ -532,7 +532,8 @@ public class QuizModule extends JFrame implements Quiz {
                 "C",
                 QuestionType.MULTIPLE_CHOICE
         ));
-
+        
+         // Question 3: Multiple choice
         addQuestion(new Question(
                 "Which of the following is an example of a communicable disease?\n"
                         + "A. Diabetes\n"
@@ -542,7 +543,8 @@ public class QuizModule extends JFrame implements Quiz {
                 "C",
                 QuestionType.MULTIPLE_CHOICE
         ));
-
+        
+         // Question 4: Multiple choice
         addQuestion(new Question(
                 "How can we reduce mosquito breeding?\n"
                         + "A. Remove stagnant water\n"
@@ -553,6 +555,7 @@ public class QuizModule extends JFrame implements Quiz {
                 QuestionType.MULTIPLE_CHOICE
         ));
 
+         // Question 5: Multiple choice
         addQuestion(new Question(
                 "Which disease is a non-communicable disease?\n"
                         + "A. COVID-19\n"
@@ -562,7 +565,8 @@ public class QuizModule extends JFrame implements Quiz {
                 "D",
                 QuestionType.MULTIPLE_CHOICE
         ));
-
+        
+         // Question 6: Multiple choice
         addQuestion(new Question(
                 "Which habit helps reduce the risk of non-communicable diseases?\n"
                         + "A. Smoking\n"
@@ -573,6 +577,7 @@ public class QuizModule extends JFrame implements Quiz {
                 QuestionType.MULTIPLE_CHOICE
         ));
 
+        // Question 7: Multiple choice
         addQuestion(new Question(
                 "Which safety habit can help prevent injury?\n"
                         + "A. Not wearing a helmet\n"
@@ -583,6 +588,7 @@ public class QuizModule extends JFrame implements Quiz {
                 QuestionType.MULTIPLE_CHOICE
         ));
 
+         // Question 8: Multiple choice
         addQuestion(new Question(
                 "Universal Health Care means people should receive needed health services without:\n"
                         + "A. Learning about health\n"
@@ -593,6 +599,7 @@ public class QuizModule extends JFrame implements Quiz {
                 QuestionType.MULTIPLE_CHOICE
         ));
 
+         // Question 9: Multiple choice
         addQuestion(new Question(
                 "Which daily healthy lifestyle habit is recommended?\n"
                         + "A. Limit sugary drinks\n"
@@ -603,6 +610,7 @@ public class QuizModule extends JFrame implements Quiz {
                 QuestionType.MULTIPLE_CHOICE
         ));
 
+        // Question 10: Multiple choice
         addQuestion(new Question(
                 "What should people do during a health emergency?\n"
                         + "A. Spread rumours\n"
@@ -613,60 +621,70 @@ public class QuizModule extends JFrame implements Quiz {
                 QuestionType.MULTIPLE_CHOICE
         ));
 
+        // Question 11: True or False
         addQuestion(new Question(
                 "True or False: Maternal and child health includes safe delivery with trained health workers.",
                 "True",
                 QuestionType.TRUE_FALSE
         ));
 
+        // Question 12: True or False
         addQuestion(new Question(
                 "True or False: Communicable diseases can spread through air, water, insects, blood, or direct contact.",
                 "True",
                 QuestionType.TRUE_FALSE
         ));
 
+        // Question 13: True or False
         addQuestion(new Question(
                 "True or False: Non-communicable diseases spread directly from one person to another.",
                 "False",
                 QuestionType.TRUE_FALSE
         ));
 
+        // Question 14: True or False
         addQuestion(new Question(
                 "True or False: Substance abuse can harm physical health, mental health, relationships, and community safety.",
                 "True",
                 QuestionType.TRUE_FALSE
         ));
 
+           // Question 15: True or False
         addQuestion(new Question(
                 "True or False: Mental health affects how people think, feel, study, work, and connect with others.",
                 "True",
                 QuestionType.TRUE_FALSE
         ));
 
+        // Question 16: Fill in the blank
         addQuestion(new Question(
                 "Fill in the blank: Reproductive health includes puberty education, menstrual health, family planning information, and respect for consent, privacy, and personal __________.",
                 "safety",
                 QuestionType.FILL_IN_THE_BLANK
         ));
 
+          // Question 17: Fill in the blank
         addQuestion(new Question(
                 "Fill in the blank: Universal Health Care includes health promotion, prevention, treatment, rehabilitation, and access to essential __________.",
                 "medicines",
                 QuestionType.FILL_IN_THE_BLANK
         ));
 
+         // Question 18: Fill in the blank
         addQuestion(new Question(
                 "Fill in the blank: During a health emergency, people should not spread __________.",
                 "rumours",
                 QuestionType.FILL_IN_THE_BLANK
         ));
 
+        // Question 19: Short answer
         addQuestion(new Question(
                 "Give one supportive habit for maintaining mental health and well-being.",
                 "talk to trusted people",
                 QuestionType.SHORT_ANSWER
         ));
 
+          // Question 20: Short answer
         addQuestion(new Question(
                 "State one way students can support SDG 3 in daily life.",
                 "share accurate health information",
