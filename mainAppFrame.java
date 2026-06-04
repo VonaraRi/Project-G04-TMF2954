@@ -12,7 +12,7 @@ import javax.swing.border.EmptyBorder;
  * Desktop GUI matching smartphone form factor and UI aesthetics for SDG 3.
  * Fulfills Member 1 responsibilities regarding UI layout management and app entry point.
  ** Creator: Rionnalyn (GUI + Data Storage + Integration)
- * Tester:
+ * Tester: Sabrina Natasha
  */
 public class mainAppFrame extends JFrame {
 
