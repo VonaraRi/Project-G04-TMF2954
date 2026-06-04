@@ -1,6 +1,9 @@
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -8,7 +11,7 @@ import javax.swing.border.EmptyBorder;
 /**
  * Desktop GUI matching smartphone form factor and UI aesthetics for SDG 3.
  * Fulfills Member 1 responsibilities regarding UI layout management and app entry point.
- * *Creator: Rionnalyn (GUI + Data Storage + Integration)
+ ** Creator: Rionnalyn (GUI + Data Storage + Integration)
  * Tester:
  */
 public class mainAppFrame extends JFrame {
@@ -33,14 +36,13 @@ public class mainAppFrame extends JFrame {
     private final Color COLOR_BORDER = new Color(70, 85, 87);
 
     public mainAppFrame() {
-        // Enforce smartphone layout constraints run inside desktop frames
         setTitle("SDG 3: Good Health & Well-being");
         setSize(420, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
 
-        // Instantiate Member 1 Data Engine (Choose true for Java DB, false for CSV)
+        // Choose true for Java DB, false for CSV/text file
         this.storageManager = new DataManager(false);
 
         cardLayout = new CardLayout();
@@ -69,7 +71,10 @@ public class mainAppFrame extends JFrame {
                 super.paintComponent(g);
 
                 Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setRenderingHint(
+                        RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON
+                );
 
                 g2.setColor(COLOR_SDG_GREEN);
                 g2.fillOval(0, 0, 100, 100);
@@ -98,7 +103,10 @@ public class mainAppFrame extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setRenderingHint(
+                        RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON
+                );
 
                 g2.setColor(COLOR_TEXT_FIELD);
                 g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
@@ -136,12 +144,15 @@ public class mainAppFrame extends JFrame {
             }
         });
 
-        // Sign In Execution Button
+        // Sign In Button
         JButton btnSignIn = new JButton("Sign In") {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setRenderingHint(
+                        RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON
+                );
 
                 g2.setColor(COLOR_SDG_GREEN);
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
@@ -176,7 +187,6 @@ public class mainAppFrame extends JFrame {
 
             processUserLogin(inputName);
 
-            // Dynamically update profile sub-chip values
             lblUserProfileChip.setText(
                     "<html><body style='color:#ffffff; font-weight:bold; font-family:Arial;'>"
                             + currentUser
@@ -185,7 +195,6 @@ public class mainAppFrame extends JFrame {
                             + " pts</span></body></html>"
             );
 
-            // Re-render sorting arrangements inside the leaderboard UI card
             refreshLeaderboardDisplay();
 
             cardLayout.show(mainContainer, "DashboardScreen");
@@ -207,7 +216,8 @@ public class mainAppFrame extends JFrame {
     }
 
     /**
-     * Checks if user exists via Storage interface, matching existing scores or saving baseline.
+     * Checks if the user already exists in the score storage.
+     * If the user is new, the system will not save 0 score into the file.
      */
     private void processUserLogin(String username) {
         boolean userFound = false;
@@ -221,14 +231,28 @@ public class mainAppFrame extends JFrame {
 
                 if (parts.length >= 2 && parts[0].trim().equalsIgnoreCase(username)) {
                     userFound = true;
-                    savedScore = Integer.parseInt(parts[1].trim());
-                    username = parts[0].trim(); // Preserve exact case
-                    break;
+
+                    int scoreFromFile = 0;
+
+                    try {
+                        scoreFromFile = Integer.parseInt(parts[1].trim());
+                    } catch (NumberFormatException ex) {
+                        scoreFromFile = 0;
+                    }
+
+                    // Take the highest score for this user
+                    if (scoreFromFile > savedScore) {
+                        savedScore = scoreFromFile;
+                    }
+
+                    username = parts[0].trim();
                 }
             }
 
+            // Important:
+            // Do not save username with 0 score during login.
+            // Score will only be saved after the user finishes the quiz.
             if (!userFound) {
-                storageManager.saveScore(username, 0); // New user baseline initialization
                 savedScore = 0;
             }
 
@@ -261,7 +285,10 @@ public class mainAppFrame extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setRenderingHint(
+                        RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON
+                );
 
                 g2.setColor(new Color(15, 25, 26));
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
@@ -283,7 +310,7 @@ public class mainAppFrame extends JFrame {
         scrollContent.setLayout(new BoxLayout(scrollContent, BoxLayout.Y_AXIS));
         scrollContent.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // --- SECTION A: THE LEARNING PORTAL BUTTONS
+        // SECTION A: THE LEARNING PORTAL
         JLabel lblSectionLearning = new JLabel("THE LEARNING PORTAL");
         lblSectionLearning.setFont(new Font("Arial", Font.BOLD, 14));
         lblSectionLearning.setForeground(new Color(140, 155, 157));
@@ -322,7 +349,7 @@ public class mainAppFrame extends JFrame {
         scrollContent.add(gridModules);
         scrollContent.add(Box.createVerticalStrut(25));
 
-        // ---SECTION B: KNOWLEDGE CHECK
+        // SECTION B: KNOWLEDGE CHECK
         JLabel lblSectionQuiz = new JLabel("KNOWLEDGE CHECK");
         lblSectionQuiz.setFont(new Font("Arial", Font.BOLD, 14));
         lblSectionQuiz.setForeground(new Color(140, 155, 157));
@@ -335,7 +362,10 @@ public class mainAppFrame extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setRenderingHint(
+                        RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON
+                );
 
                 g2.setColor(COLOR_CARD_BG);
                 g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
@@ -353,17 +383,15 @@ public class mainAppFrame extends JFrame {
         quizBox.setMaximumSize(new Dimension(370, 175));
         quizBox.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-         /* =========================================================================
-         * [MEMBER 3 & 4 PLUG-IN AREA: QUIZ TIMER & PROGRESS UI LAYER]
-         * The countdown timers, tracking metrics, and custom visual progress bars
-         * fall under Member 3 (Quiz Module) and Member 4 (Gamification Elements).
-         * ========================================================================= */
         JPanel timerRow = new JPanel(new BorderLayout());
         timerRow.setOpaque(false);
+
         JLabel lblTimer = new JLabel("Time Tracker: Ready");
         lblTimer.setFont(new Font("Arial", Font.BOLD, 15));
         lblTimer.setForeground(Color.WHITE);
+
         timerRow.add(lblTimer, BorderLayout.WEST);
+
         quizBox.add(timerRow);
         quizBox.add(Box.createVerticalStrut(15));
 
@@ -371,7 +399,10 @@ public class mainAppFrame extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setRenderingHint(
+                        RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON
+                );
 
                 g2.setColor(COLOR_SDG_GREEN);
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
@@ -393,12 +424,28 @@ public class mainAppFrame extends JFrame {
         btnStartQuiz.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         btnStartQuiz.addActionListener(e -> {
-            /* =========================================================================
-             * [MEMBER 3 ACTION HOOK]
-             * Connect this listener action directly to display Member 3's Quiz UI panel.
-             * ========================================================================= */
+            QuizModule quizModule = new QuizModule(currentUser, storageManager);
 
-            Quiz quizModule = new QuizModule(currentUser, storageManager);
+            quizModule.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    // Reload user score after quiz is finished
+                    processUserLogin(currentUser);
+
+                    // Update dashboard profile score
+                    lblUserProfileChip.setText(
+                            "<html><body style='color:#ffffff; font-weight:bold; font-family:Arial;'>"
+                                    + currentUser
+                                    + " <span style='color:#4CAF50;'> "
+                                    + currentUserScore
+                                    + " pts</span></body></html>"
+                    );
+
+                    // Refresh leaderboard after quiz is finished
+                    refreshLeaderboardDisplay();
+                }
+            });
+
             quizModule.startQuiz();
         });
 
@@ -428,7 +475,10 @@ public class mainAppFrame extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setRenderingHint(
+                        RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON
+                );
 
                 g2.setColor(COLOR_CARD_BG);
                 g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
@@ -444,7 +494,7 @@ public class mainAppFrame extends JFrame {
         leaderboardCardContainer.setLayout(new BoxLayout(leaderboardCardContainer, BoxLayout.Y_AXIS));
         leaderboardCardContainer.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         leaderboardCardContainer.setAlignmentX(Component.LEFT_ALIGNMENT);
-        leaderboardCardContainer.setMaximumSize(new Dimension(370, 240));
+        leaderboardCardContainer.setMaximumSize(new Dimension(370, 1000));
 
         scrollContent.add(leaderboardCardContainer);
 
@@ -453,71 +503,123 @@ public class mainAppFrame extends JFrame {
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
+        // Make scrollbar smaller
+        scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(6, 0));
+
         containerPanel.add(scrollPane, BorderLayout.CENTER);
 
         return containerPanel;
     }
 
     /**
-     * Prepares structural container layout for the leaderboard card panel.
+     * Displays the leaderboard from highest score to lowest score.
+     * Users with 0 score will not be displayed.
      */
     private void refreshLeaderboardDisplay() {
         leaderboardCardContainer.removeAll();
 
-        /* =========================================================================
-         * [MEMBER 4 TASK MATRIX: LEADERBOARD SORTING, MEDALS, AND GAMIFICATION DISPLAY]
-         * Sabrina Natasha is responsible for sorting data rows and appending badges/rewards.
-         * This safe hook placeholder calls your Storage implementation and renders them safely.
-         * ========================================================================= */
-
         try {
             List<String> recordsList = storageManager.getAllScores();
 
-            int displayCount = 1;
+            /*
+             * This map combines scores for the same username.
+             * If the same username has many attempts, only the highest score is used.
+             */
+            Map<String, Integer> userScores = new HashMap<>();
 
             for (String entryLine : recordsList) {
-                if (displayCount > 4) {
-                    break;
-                }
-
                 String[] segments = entryLine.split(",");
-                String nameStr = segments[0];
-                String scoreStr = segments.length > 1 ? segments[1] : "0";
 
-                JPanel rowPanel = new JPanel(new BorderLayout());
-                rowPanel.setOpaque(false);
-                rowPanel.setBorder(BorderFactory.createEmptyBorder(12, 20, 12, 20));
+                if (segments.length >= 2) {
+                    String nameStr = segments[0].trim();
+                    int scoreValue = 0;
 
-                JLabel lblLeft = new JLabel(
-                        "<html><body style='font-family:Arial; font-size:14px; color:#ffffff;'>"
-                                + "<span style='color:#8c9b9d; font-weight:bold;'>"
-                                + displayCount
-                                + "</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-                                + "<b>"
-                                + nameStr
-                                + "</b></body></html>"
-                );
+                    try {
+                        scoreValue = Integer.parseInt(segments[1].trim());
+                    } catch (NumberFormatException ex) {
+                        scoreValue = 0;
+                    }
 
-                rowPanel.add(lblLeft, BorderLayout.WEST);
+                    // Do not display users who have not completed the quiz yet.
+                    if (scoreValue <= 0) {
+                        continue;
+                    }
 
-                JLabel lblRight = new JLabel(
-                        "<html><body style='font-family:Arial; font-size:14px; font-weight:bold; color:#4CAF50;'>"
-                                + scoreStr
-                                + " <span style='font-size:11px; color:#ffffff;'>pts</span></body></html>"
-                );
-
-                rowPanel.add(lblRight, BorderLayout.EAST);
-
-                leaderboardCardContainer.add(rowPanel);
-
-                if (displayCount < 4 && displayCount < recordsList.size()) {
-                    JSeparator sep = new JSeparator();
-                    sep.setForeground(new Color(50, 68, 70));
-                    sep.setBackground(new Color(50, 68, 70));
-                    leaderboardCardContainer.add(sep);
+                    // If same username exists, keep the highest score only.
+                    if (!userScores.containsKey(nameStr)
+                            || scoreValue > userScores.get(nameStr)) {
+                        userScores.put(nameStr, scoreValue);
+                    }
                 }
+            }
 
-                displayCount++;
+            /*
+             * Convert the map back into List<String> format.
+             * This format is needed because Leaderboard.sortScores()
+             * reads records in username,score format.
+             */
+            List<String> sortedRecords = new ArrayList<>();
+
+            for (Map.Entry<String, Integer> entry : userScores.entrySet()) {
+                sortedRecords.add(entry.getKey() + "," + entry.getValue());
+            }
+
+            // Link with Member 4 Leaderboard class.
+            Leaderboard leaderboard = new Leaderboard();
+
+            // Sort scores from highest to lowest.
+            leaderboard.sortScores(sortedRecords);
+
+            int displayCount = 1;
+
+            // Display users after sorting.
+            for (String entryLine : sortedRecords) {
+                String[] segments = entryLine.split(",");
+
+                if (segments.length >= 2) {
+                    String nameStr = segments[0].trim();
+                    String scoreStr = segments[1].trim();
+
+                    // Medal appears for top 3 users only.
+                    String medal = leaderboard.getMedal(displayCount);
+
+                    JPanel rowPanel = new JPanel(new BorderLayout());
+                    rowPanel.setOpaque(false);
+                    rowPanel.setBorder(BorderFactory.createEmptyBorder(12, 20, 12, 20));
+
+                    JLabel lblLeft = new JLabel(
+                            "<html><body style='font-family:Arial; font-size:14px; color:#ffffff;'>"
+                                    + "<span style='color:#8c9b9d; font-weight:bold;'>"
+                                    + displayCount
+                                    + "</span>&nbsp;&nbsp;"
+                                    + medal
+                                    + "&nbsp;&nbsp;"
+                                    + "<b>"
+                                    + nameStr
+                                    + "</b></body></html>"
+                    );
+
+                    rowPanel.add(lblLeft, BorderLayout.WEST);
+
+                    JLabel lblRight = new JLabel(
+                            "<html><body style='font-family:Arial; font-size:14px; font-weight:bold; color:#4CAF50;'>"
+                                    + scoreStr
+                                    + " <span style='font-size:11px; color:#ffffff;'>pts</span></body></html>"
+                    );
+
+                    rowPanel.add(lblRight, BorderLayout.EAST);
+
+                    leaderboardCardContainer.add(rowPanel);
+
+                    if (displayCount < sortedRecords.size()) {
+                        JSeparator sep = new JSeparator();
+                        sep.setForeground(new Color(50, 68, 70));
+                        sep.setBackground(new Color(50, 68, 70));
+                        leaderboardCardContainer.add(sep);
+                    }
+
+                    displayCount++;
+                }
             }
 
         } catch (CustomStorageException e) {
@@ -536,7 +638,10 @@ public class mainAppFrame extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setRenderingHint(
+                        RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON
+                );
 
                 if (getModel().isPressed()) {
                     g2.setColor(COLOR_CARD_BG.brighter());
@@ -566,7 +671,10 @@ public class mainAppFrame extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setRenderingHint(
+                        RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON
+                );
 
                 g2.setColor(new Color(60, 78, 82));
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 6, 6);
@@ -600,10 +708,6 @@ public class mainAppFrame extends JFrame {
     }
 
     private void launchLearningModule(int moduleId) {
-        /* =========================================================================
-         * [BEGINNING OF CHAN KA HOU 103617's ACTION HOOK]
-         * Connect these click triggers directly to Chan Ka Hou's Educational Screen frames.
-         * ========================================================================= */
         try {
             Learning learningModule = new LearningModule(moduleId);
             learningModule.showContent(this);
@@ -617,9 +721,6 @@ public class mainAppFrame extends JFrame {
             );
         }
     }
-            /* =========================================================================
-             * [END OF CHAN KA HOU 103617's ACTION HOOK]
-             * ========================================================================= */
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(mainAppFrame::new);
