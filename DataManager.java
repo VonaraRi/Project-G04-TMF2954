@@ -7,7 +7,7 @@ import java.util.List;
  * Concrete implementation handling both CSV and Java DB storage mechanisms.
  * and overriding interface contracts.
  * * Creator: Rionnalyn 106148 (GUI + Data Storage + Integration)
- * Tester: 
+ * Tester: Chan Ka Hou 103617
  */
 public class DataManager implements Storage {
     
