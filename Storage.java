@@ -3,8 +3,8 @@ import java.util.List;
 /**
  * Structural Java Interface fulfilling Member 1's Individual OOP Requirement.
  * Focuses on Abstraction and storage-agnostic data operations.
- * * Creator: Rionnalyn (GUI + Data Storage + Integration)
- * Tester:
+ * * Creator: Rionnalyn 106148 (GUI + Data Storage + Integration)
+ * Tester: Chan Ka Hou 103617
  */
 public interface Storage {
     /**
