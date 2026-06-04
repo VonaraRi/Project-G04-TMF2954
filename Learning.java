@@ -5,7 +5,7 @@ import javax.swing.JFrame;
  * This is not a GUI; it only defines the behaviours that the learning module must provide.
  *
  * Creator: Chan Ka Hou 103617
- * Tester:
+ * Tester: Rionnalyn 106148
  */
 
 public interface Learning {
