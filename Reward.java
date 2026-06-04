@@ -1,7 +1,7 @@
 /**
  * Stores badge, stars and motivational message.
  * Creator: Sabrina Natasha (106199)
- * Tester:
+ * Tester:Rosfanida ak Benjamin 106171
  */
 
 public class Reward {
