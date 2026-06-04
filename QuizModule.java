@@ -105,9 +105,15 @@ public class QuizModule extends JFrame implements Quiz {
         String answer = userAnswer.trim();
         String correctAnswer = question.getAnswer().trim();
 
-        // Make all answers not case-sensitive.
-        return answer.equalsIgnoreCase(correctAnswer);
+        // TRUE_FALSE question is case-sensitive.
+        // User must type exactly "True" or "False".
+        if (question.getQuestionType() == QuestionType.TRUE_FALSE) {
+        return answer.equals(correctAnswer);
     }
+
+    // Other question types are not case-sensitive.
+    return answer.equalsIgnoreCase(correctAnswer);
+}
 
     // This method is used to create the full quiz GUI layout.
     private void createQuizGUI() {
