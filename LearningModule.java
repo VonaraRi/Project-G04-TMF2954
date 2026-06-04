@@ -10,7 +10,7 @@ import java.util.List;
  * Provides at least 10 educational screens with text and generated Java2D images.
  *
  * Creator: Chan Ka Hou 103617 (Learning module + educational content)
- * Tester:
+ * Tester: Rionnalyn 106148
  */
 
 public class LearningModule implements Learning {
