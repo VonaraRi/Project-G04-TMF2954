@@ -2,7 +2,7 @@
  * Automated command-line tests for Learning Module.
  *
  * Creator: Chan Ka Hou 103617
- * Tester:
+ * Tester: Rionnalyn 106148
  */
 
 public class LearningModuleAutomatedTest {
