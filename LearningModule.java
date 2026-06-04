@@ -64,7 +64,7 @@ public class LearningModule implements Learning {
                 "Good Health and Well-being",
                 "SDG 3 focuses on making healthy lives possible for all people.\n\n" +
                         "Key idea:\n" +
-                        "• Health is not only about hospitals. It includes prevention, education, safe behaviour, emergency readiness, and fair access to care.\n\n" +
+                        "- Health is not only about hospitals. It includes prevention, education, safe behaviour, emergency readiness, and fair access to care.\n\n" +
                         "In this application, you will learn the main health topics, then check your understanding through the quiz module.",
                 "overview"));
 
@@ -73,10 +73,10 @@ public class LearningModule implements Learning {
                 "Maternal & Child Health",
                 "Maternal and child health protects mothers, babies, and young children before, during, and after birth.\n\n" +
                         "Important actions:\n" +
-                        "• Attend antenatal check-ups.\n" +
-                        "• Ensure safe delivery with trained health workers.\n" +
-                        "• Give babies proper nutrition and immunisation.\n" +
-                        "• Watch for danger signs such as fever, bleeding, dehydration, or breathing difficulty.",
+                        "- Attend antenatal check-ups.\n" +
+                        "- Ensure safe delivery with trained health workers.\n" +
+                        "- Give babies proper nutrition and immunisation.\n" +
+                        "- Watch for danger signs such as fever, bleeding, dehydration, or breathing difficulty.",
                 "maternal"));
 
         contentPages.add(new LearningPage(
@@ -85,11 +85,11 @@ public class LearningModule implements Learning {
                 "Communicable diseases can spread from one person to another through air, water, insects, blood, or direct contact.\n\n" +
                         "Examples include influenza, tuberculosis, dengue, measles, and COVID-19.\n\n" +
                         "Prevention habits:\n" +
-                        "• Wash hands regularly.\n" +
-                        "• Wear masks when appropriate.\n" +
-                        "• Complete vaccinations.\n" +
-                        "• Avoid sharing personal items.\n" +
-                        "• Remove stagnant water to reduce mosquito breeding.",
+                        "- Wash hands regularly.\n" +
+                        "- Wear masks when appropriate.\n" +
+                        "- Complete vaccinations.\n" +
+                        "- Avoid sharing personal items.\n" +
+                        "- Remove stagnant water to reduce mosquito breeding.",
                 "communicable"));
 
         contentPages.add(new LearningPage(
@@ -98,11 +98,11 @@ public class LearningModule implements Learning {
                 "Non-communicable diseases do not spread directly between people. They usually develop over time.\n\n" +
                         "Examples include diabetes, heart disease, stroke, asthma, and cancer.\n\n" +
                         "Risk reduction:\n" +
-                        "• Eat balanced meals.\n" +
-                        "• Exercise regularly.\n" +
-                        "• Avoid smoking and harmful alcohol use.\n" +
-                        "• Go for screening when recommended.\n" +
-                        "• Manage stress and sleep properly.",
+                        "- Eat balanced meals.\n" +
+                        "- Exercise regularly.\n" +
+                        "- Avoid smoking and harmful alcohol use.\n" +
+                        "- Go for screening when recommended.\n" +
+                        "- Manage stress and sleep properly.",
                 "ncd"));
 
         contentPages.add(new LearningPage(
@@ -110,11 +110,11 @@ public class LearningModule implements Learning {
                 "Substance Abuse & Injury Prevention",
                 "Substance abuse harms physical health, mental health, relationships, and community safety. Injury prevention reduces avoidable accidents.\n\n" +
                         "Safe choices:\n" +
-                        "• Say no to drugs and misuse of medication.\n" +
-                        "• Use helmets and seatbelts.\n" +
-                        "• Avoid driving when tired or impaired.\n" +
-                        "• Keep sharp objects, chemicals, and medicine away from children.\n" +
-                        "• Ask for help early when addiction warning signs appear.",
+                        "- Say no to drugs and misuse of medication.\n" +
+                        "- Use helmets and seatbelts.\n" +
+                        "- Avoid driving when tired or impaired.\n" +
+                        "- Keep sharp objects, chemicals, and medicine away from children.\n" +
+                        "- Ask for help early when addiction warning signs appear.",
                 "injury"));
 
         contentPages.add(new LearningPage(
@@ -122,11 +122,11 @@ public class LearningModule implements Learning {
                 "Reproductive Health",
                 "Reproductive health means people can make informed, safe, and respectful decisions about their bodies and families.\n\n" +
                         "It includes:\n" +
-                        "• Puberty education.\n" +
-                        "• Menstrual health.\n" +
-                        "• Family planning information.\n" +
-                        "• Prevention and treatment of reproductive infections.\n" +
-                        "• Respect for consent, privacy, and personal safety.",
+                        "- Puberty education.\n" +
+                        "- Menstrual health.\n" +
+                        "- Family planning information.\n" +
+                        "- Prevention and treatment of reproductive infections.\n" +
+                        "- Respect for consent, privacy, and personal safety.",
                 "reproductive"));
 
         contentPages.add(new LearningPage(
@@ -134,10 +134,10 @@ public class LearningModule implements Learning {
                 "Universal Health Care",
                 "Universal Health Care means people should be able to receive needed health services without being pushed into financial hardship.\n\n" +
                         "It includes:\n" +
-                        "• Health promotion and prevention.\n" +
-                        "• Treatment and rehabilitation.\n" +
-                        "• Access to essential medicines.\n" +
-                        "• Affordable services for every community.\n\n" +
+                        "- Health promotion and prevention.\n" +
+                        "- Treatment and rehabilitation.\n" +
+                        "- Access to essential medicines.\n" +
+                        "- Affordable services for every community.\n\n" +
                         "Fair access matters because health should not depend only on income or location.",
                 "uhc"));
 
@@ -146,10 +146,10 @@ public class LearningModule implements Learning {
                 "Mental Health & Well-being",
                 "Mental health affects how people think, feel, study, work, and connect with others.\n\n" +
                         "Supportive habits:\n" +
-                        "• Talk to trusted people when overwhelmed.\n" +
-                        "• Rest, exercise, and keep a healthy routine.\n" +
-                        "• Reduce harmful comparison online.\n" +
-                        "• Seek professional help when stress, anxiety, or sadness becomes hard to manage.\n\n" +
+                        "- Talk to trusted people when overwhelmed.\n" +
+                        "- Rest, exercise, and keep a healthy routine.\n" +
+                        "- Reduce harmful comparison online.\n" +
+                        "- Seek professional help when stress, anxiety, or sadness becomes hard to manage.\n\n" +
                         "Asking for help is a strength, not a weakness.",
                 "mental"));
 
@@ -158,11 +158,11 @@ public class LearningModule implements Learning {
                 "Health Emergencies",
                 "Health emergencies include disease outbreaks, natural disasters, injuries, poisoning, heat illness, and sudden medical problems.\n\n" +
                         "Preparedness steps:\n" +
-                        "• Know local emergency numbers.\n" +
-                        "• Keep a first-aid kit.\n" +
-                        "• Follow verified health announcements.\n" +
-                        "• Do not spread rumours during a crisis.\n" +
-                        "• Help vulnerable people such as children, older adults, and disabled people.",
+                        "- Know local emergency numbers.\n" +
+                        "- Keep a first-aid kit.\n" +
+                        "- Follow verified health announcements.\n" +
+                        "- Do not spread rumours during a crisis.\n" +
+                        "- Help vulnerable people such as children, older adults, and disabled people.",
                 "emergency"));
 
         contentPages.add(new LearningPage(
@@ -170,12 +170,12 @@ public class LearningModule implements Learning {
                 "Daily Healthy Lifestyle",
                 "Small daily actions can prevent many health problems.\n\n" +
                         "Healthy routine checklist:\n" +
-                        "• Drink enough water.\n" +
-                        "• Eat fruits, vegetables, and balanced meals.\n" +
-                        "• Sleep 7 to 9 hours when possible.\n" +
-                        "• Move your body every day.\n" +
-                        "• Limit sugary drinks and ultra-processed food.\n" +
-                        "• Take breaks from screens and protect your eyes.",
+                        "- Drink enough water.\n" +
+                        "- Eat fruits, vegetables, and balanced meals.\n" +
+                        "- Sleep 7 to 9 hours when possible.\n" +
+                        "- Move your body every day.\n" +
+                        "- Limit sugary drinks and ultra-processed food.\n" +
+                        "- Take breaks from screens and protect your eyes.",
                 "lifestyle"));
 
         contentPages.add(new LearningPage(
@@ -183,11 +183,11 @@ public class LearningModule implements Learning {
                 "How You Can Support SDG 3",
                 "Everyone can contribute to Good Health and Well-being.\n\n" +
                         "You can:\n" +
-                        "• Share accurate health information.\n" +
-                        "• Encourage friends to complete vaccinations and screenings.\n" +
-                        "• Avoid stigma toward illness or mental health struggles.\n" +
-                        "• Practise safe habits and model them for others.\n" +
-                        "• Join community health campaigns when available.\n\n" +
+                        "- Share accurate health information.\n" +
+                        "- Encourage friends to complete vaccinations and screenings.\n" +
+                        "- Avoid stigma toward illness or mental health struggles.\n" +
+                        "- Practise safe habits and model them for others.\n" +
+                        "- Join community health campaigns when available.\n\n" +
                         "Next step: return to the dashboard and start the knowledge check.",
                 "action"));
 
