@@ -4,7 +4,7 @@
  * the question text, correct answer, and question type.
  *
  * Creator: Rosfanida ak Benjamin 106171
- * Tester:
+ * Tester: Sabrina Natasha
  */
 public class Question {
     
