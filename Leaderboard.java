@@ -8,22 +8,28 @@ public class Leaderboard {
 
     public void sortScores(List<String> records) {
 
-        Collections.sort(records,
-                new Comparator<String>() {
+    for (int i = 0; i < records.size() - 1; i++) {
 
-                    @Override
-                    public int compare(String a, String b) {
+        int maxIndex = i;
 
-                        int scoreA =
-                                Integer.parseInt(a.split(",")[1]);
+        for (int j = i + 1; j < records.size(); j++) {
 
-                        int scoreB =
-                                Integer.parseInt(b.split(",")[1]);
+            int score1 =
+                    Integer.parseInt(records.get(maxIndex).split(",")[1]);
 
-                        return Integer.compare(scoreB, scoreA);
-                    }
-                });
+            int score2 =
+                    Integer.parseInt(records.get(j).split(",")[1]);
+
+            if (score2 > score1) {
+                maxIndex = j;
+            }
+        }
+
+        String temp = records.get(i);
+        records.set(i, records.get(maxIndex));
+        records.set(maxIndex, temp);
     }
+}
 
     public String getMedal(int rank) {
 
