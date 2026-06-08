@@ -7,16 +7,31 @@ import java.util.List;
 
 /**
  * Learning Module for SDG 3: Good Health and Well-being.
- * Provides at least 10 educational screens with text and generated Java2D images.
+ *
+ * This class creates the educational content section of the app.
+ * It provides at least 10 learning screens with text and generated Java2D images.
+ *
+ * OOP concepts shown:
+ * - implements Learning: this class follows the Learning interface
+ * - overriding: methods like loadContent(), showContent(), nextPage(), and previousPage()
+ * - overloading: two constructors, LearningModule() and LearningModule(int moduleId)
+ * - encapsulation: fields are private so they can only be changed inside this class
+ * - custom exception: LearningContentException is used when content validation fails
  *
  * Creator: Chan Ka Hou 103617 (Learning module + educational content)
  * Tester: Rionnalyn 106148
  */
 
+// "implements Learning" means this class promises to provide all methods
+// declared inside the Learning interface.
 public class LearningModule implements Learning {
 
+    // Stores all learning pages. Each page contains title, topic, text, and visual code.
     private final List<LearningPage> contentPages = new ArrayList<>();
+    // Tracks which learning page is currently being displayed.
     private int currentPageIndex = 0;
+    // Stores the dashboard module selected by the user.
+    // It is used to decide which learning screen should open first.
     private final int selectedModuleId;
 
     private JDialog dialog;
@@ -28,6 +43,7 @@ public class LearningModule implements Learning {
     private JButton btnPrevious;
     private JButton btnNext;
 
+    // Colour constants keep the learning module visually consistent with the main dashboard.
     private final Color COLOR_BG = new Color(30, 45, 47);
     private final Color COLOR_DARK_HEADER = new Color(23, 34, 36);
     private final Color COLOR_SDG_GREEN = new Color(76, 175, 80);
@@ -35,26 +51,38 @@ public class LearningModule implements Learning {
     private final Color COLOR_BORDER = new Color(70, 85, 87);
     private final Color COLOR_MUTED_TEXT = new Color(170, 184, 186);
 
-    // Overloaded constructor: starts from the intro page.
-
+    /**
+     * Default constructor.
+     *
+     * This is constructor overloading.
+     * If no module ID is given, the learning module starts from the overview page.
+     */
     public LearningModule() throws LearningContentException {
         this(0);
     }
 
     /**
-     * Overloaded constructor: starts from the dashboard topic selected by Member 1's GUI.
+     * Overloaded constructor.
      *
-     * @param moduleId dashboard module number from 1 to 6.
+     * This constructor receives the module ID selected from the dashboard.
+     * It loads all content first, then chooses the correct starting page.
+     *
+     * @param moduleId dashboard module number from 1 to 6
      */
-
     public LearningModule(int moduleId) throws LearningContentException {
         this.selectedModuleId = moduleId;
         loadContent();
         this.currentPageIndex = mapModuleToStartPage(moduleId);
     }
 
-    // Loads 10 educational content screens for SDG 3.
-
+    /**
+     * Loads the educational pages for SDG 3.
+     *
+     * This method overrides the method declared in the Learning interface.
+     * The project requires at least 10 learning screens with text and images.
+     *
+     * If fewer than 10 pages are loaded, the method throws LearningContentException.
+     */
     @Override
     public void loadContent() throws LearningContentException {
         contentPages.clear();
@@ -191,13 +219,21 @@ public class LearningModule implements Learning {
                         "Next step: return to the dashboard and start the knowledge check.",
                 "action"));
 
+        // Validation for project requirement:
+        // the learning module must contain at least 10 educational screens.
         if (contentPages.size() < 10) {
             throw new LearningContentException("At least 10 learning screens are required.");
         }
     }
 
-    // Displays the learning module in a desktop window sized like a smartphone screen.
-
+    /**
+     * Displays the learning module window sized like a smartphone screen..
+     *
+     * This method overrides showContent() from the Learning interface.
+     * JFrame parent is used so the learning window opens relative to the main app.
+     *
+     * This is GUI code, but the interface Learning.java itself is not GUI.
+     */
     @Override
     public void showContent(JFrame parent) {
         if (dialog == null) {
@@ -212,8 +248,11 @@ public class LearningModule implements Learning {
         dialog.setVisible(true);
     }
 
-    // Moves to the next learning screen.
-
+    /**
+     * Moves to the next learning screen.
+     *
+     * The if-condition prevents the page index from going past the final page.
+     */
     @Override
     public void nextPage() {
         if (currentPageIndex < contentPages.size() - 1) {
@@ -222,8 +261,11 @@ public class LearningModule implements Learning {
         }
     }
 
-    // Moves to the previous learning screen.
-
+    /**
+     * Moves to the previous learning screen.
+     *
+     * The if-condition prevents the page index from going below zero.
+     */
     @Override
     public void previousPage() {
         if (currentPageIndex > 0) {
@@ -232,6 +274,17 @@ public class LearningModule implements Learning {
         }
     }
 
+    /**
+     * Builds the main visual layout of the learning window.
+     *
+     * It creates:
+     * - header area
+     * - page counter
+     * - topic title
+     * - image area
+     * - text area
+     * - previous and next buttons
+     */
     private JPanel createLearningPanel() {
         JPanel root = new JPanel(new BorderLayout());
         root.setBackground(COLOR_BG);
@@ -334,6 +387,7 @@ public class LearningModule implements Learning {
         return root;
     }
 
+    // Helper method to avoid repeating button design code for Previous and Next buttons.
     private JButton createNavigationButton(String text) {
         JButton button = new JButton(text);
         button.setFocusPainted(false);
@@ -345,6 +399,12 @@ public class LearningModule implements Learning {
         return button;
     }
 
+    /**
+     * Updates the screen based on the current page index.
+     *
+     * It changes the title, topic, body text, image, page counter,
+     * and the state of the Previous/Next buttons.
+     */
     private void updatePageView() {
         if (contentPages.isEmpty() || lblTitle == null) {
             return;
@@ -362,6 +422,15 @@ public class LearningModule implements Learning {
         btnNext.setText(currentPageIndex == contentPages.size() - 1 ? "Finish" : "Next");
     }
 
+    /**
+     * Converts the dashboard module button number into the correct starting page.
+     *
+     * Example:
+     * moduleId 1 opens Maternal & Child Health.
+     * moduleId 6 opens Health Emergencies.
+     *
+     * The default case opens the overview page if the module ID is invalid.
+     */
     private int mapModuleToStartPage(int moduleId) {
         switch (moduleId) {
             case 1:
@@ -381,6 +450,12 @@ public class LearningModule implements Learning {
         }
     }
 
+    /**
+     * Creates simple images using Java2D instead of loading external image files.
+     *
+     * This helps the app run from the command line without needing an image folder.
+     * The visualCode decides which drawing should be created for each topic.
+     */
     private BufferedImage createVisualImage(String visualCode, int width, int height) {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = image.createGraphics();
@@ -494,13 +569,24 @@ public class LearningModule implements Learning {
         return image;
     }
 
+    // Small helper method used by createVisualImage() to draw circular shapes.
     private void drawCircle(Graphics2D g2, int x, int y, int radius, Color color) {
         g2.setColor(color);
         g2.fillOval(x - radius, y - radius, radius * 2, radius * 2);
     }
 
-    // Private helper class for storing one learning page.
-
+    /**
+     * Private helper class for storing one learning page.
+     *
+     * It is private because it is only used inside LearningModule.
+     * It is static because it does not need direct access to the outer LearningModule object.
+     *
+     * Each LearningPage stores:
+     * - screen title
+     * - topic title
+     * - body text
+     * - visual code for image generation
+     */
     private static class LearningPage {
         private final String screenTitle;
         private final String topicTitle;
