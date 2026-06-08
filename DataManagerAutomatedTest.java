@@ -7,6 +7,17 @@ import java.util.List;
 /**
  * Automated command-line tests for Storage, DataManager, and CustomStorageException.
  *
+ * This file is not part of the main GUI application.
+ * It is used separately to test whether the storage code works correctly.
+ *
+ * Testing covered:
+ * - CSV file creation
+ * - Saving one score
+ * - Saving multiple scores
+ * - Reading scores without the CSV header
+ * - Using DataManager through the Storage interface
+ * - Checking the custom exception message and cause
+ *
  * Creator: Chan Ka Hou 103617
  * Tester: Rionnalyn 106148
  *
@@ -15,12 +26,21 @@ import java.util.List;
  */
 public class DataManagerAutomatedTest {
 
+    // These paths point to the real score file and a temporary backup file.
+    // The backup is used so testing does not permanently damage the original score file.
     private static final Path CSV_FILE = Paths.get("sdg3_scores.csv");
     private static final Path CSV_BACKUP = Paths.get("sdg3_scores_backup_for_test.csv");
 
     private static int testsRun = 0;
     private static int testsPassed = 0;
 
+ /**
+ * Runs all automated tests from the command line.
+ *
+ * This method first backs up the existing CSV file, runs the tests, then restores the original file after testing.
+ *
+ * The "throws IOException" is used because file backup and restore may fail.
+ */
     public static void main(String[] args) throws IOException {
         System.out.println("Running DataManager automated tests...\n");
 
@@ -53,6 +73,7 @@ public class DataManagerAutomatedTest {
         }
     }
 
+    // Tests whether the default DataManager constructor creates the CSV file.
     private static void testDefaultConstructorCreatesCsv() throws Exception {
         resetCsvFile();
 
@@ -65,6 +86,8 @@ public class DataManagerAutomatedTest {
         assertEquals("Username,Score,Timestamp", lines.get(0), "CSV header row is incorrect.");
     }
 
+    // Tests the overloaded DataManager(false) constructor.
+    // false means the program uses CSV storage instead of Java DB.
     private static void testOverloadedConstructorFalse() throws Exception {
         resetCsvFile();
 
@@ -73,6 +96,7 @@ public class DataManagerAutomatedTest {
         assertTrue(Files.exists(CSV_FILE), "CSV file should be created when useDatabase is false.");
     }
 
+    // Tests whether saveScore() correctly writes one username and score into the CSV file.
     private static void testSaveOneScore() throws Exception {
         resetCsvFile();
 
@@ -88,6 +112,7 @@ public class DataManagerAutomatedTest {
         );
     }
 
+    // Tests whether multiple scores can be saved and read back correctly.
     private static void testSaveMultipleScores() throws Exception {
         resetCsvFile();
 
@@ -104,6 +129,7 @@ public class DataManagerAutomatedTest {
         assertTrue(records.get(2).startsWith("charlie,30,"), "Third score record is incorrect.");
     }
 
+    // Tests whether getAllScores() skips the header row: Username,Score,Timestamp.
     private static void testGetAllScoresSkipsHeader() throws Exception {
         resetCsvFile();
 
@@ -119,6 +145,8 @@ public class DataManagerAutomatedTest {
         );
     }
 
+    // Tests polymorphism/abstraction.
+    // The object is DataManager, but it is stored using the Storage interface type.
     private static void testStorageInterfaceReference() throws Exception {
         resetCsvFile();
 
@@ -134,6 +162,8 @@ public class DataManagerAutomatedTest {
         );
     }
 
+    // Tests the custom exception class.
+    // It checks whether the error message and original cause are preserved.
     private static void testCustomStorageExceptionMessageAndCause() {
         IOException cause = new IOException("Original file problem");
         CustomStorageException exception = new CustomStorageException("Could not save score.", cause);
@@ -166,6 +196,12 @@ public class DataManagerAutomatedTest {
         }
     }
 
+    /**
+    * Runs one test method and prints PASS or FAIL.
+    *
+    * This avoids repeating try-catch code in every test.
+    * It also counts how many tests ran and how many passed.
+    */
     private static void runTest(String testName, TestAction action) {
         testsRun++;
 
@@ -203,6 +239,13 @@ public class DataManagerAutomatedTest {
         throw new AssertionError(message + " Expected: " + expected + ", Actual: " + actual);
     }
 
+    /**
+    * Small testing interface used so each test method can be passed into runTest().
+    *
+    * This is a functional interface because it has one abstract method.
+    * It allows code like:
+    * runTest("test name", DataManagerAutomatedTest::testSaveOneScore);
+    */
     private interface TestAction {
         void run() throws Exception;
     }
