@@ -6,8 +6,19 @@
 
 public class GamificationModule implements Gamification {
 
+    /**
+     * Maximum possible quiz score.
+     * Used for score validation.
+     */
     private static final int MAX_SCORE = 20;
 
+    /**
+     * Generates a complete Reward object based on the user's score.
+     *
+     * This method combines Badge assignment, Star calculation, Motivational message generation
+     *
+     * Returns a Reward object containing all gamification results.
+     */
     @Override
     public Reward generateReward(int score)
             throws GamificationException {
@@ -56,6 +67,10 @@ public class GamificationModule implements Gamification {
         );
     }
 
+    /**
+     * Returns a motivational message based on score.
+     * Used to encourage users after quiz completion.
+     */
     @Override
     public String getMotivationalMessage(int score)
             throws GamificationException {
@@ -77,6 +92,10 @@ public class GamificationModule implements Gamification {
         return "Don't give up";
     }
 
+    /**
+     * Calculates the number of stars earned.
+     * Star ratings range from 1-5
+     */
     @Override
     public int calculateStars(int score)
             throws GamificationException {
@@ -99,7 +118,8 @@ public class GamificationModule implements Gamification {
     }
 
     /**
-     * Assign badge only.
+     * Assigns a badge based on score.
+     * This helper method is used internally by the gamification system to determine achievement level.
      */
     public String getBadge(int score)
             throws GamificationException {
@@ -120,6 +140,13 @@ public class GamificationModule implements Gamification {
 
     /**
      * Creates a visual star display.
+     *
+     * Example:
+     * ★★★★★
+     * ★★★
+     * ★
+     *
+     * Converts the numeric star value into a display format
      */
     public String getStarDisplay(int score)
             throws GamificationException {
@@ -137,7 +164,10 @@ public class GamificationModule implements Gamification {
     }
 
     /**
-     * Validation method.
+     * Validates score input before processing.
+     * Checks:
+     * - Score is not negative
+     * - Score does not exceed maximum score
      */
     private void validateScore(int score)
             throws GamificationException {
